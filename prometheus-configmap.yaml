@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s  # Scrape every 15 seconds
+    scrape_configs:
+      - job_name: 'kubernetes-nodes'
+        kubernetes_sd_configs:
+          - role: node  # Scrape metrics from Kubernetes nodes
+      - job_name: 'kubernetes-pods'
+        kubernetes_sd_configs:
+          - role: pod  # Scrape metrics from all pods
+      - job_name: 'static-site'
+        static_configs:
+          - targets: ['static-site-service:8080'] 
